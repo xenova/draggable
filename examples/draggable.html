@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="../src/draggable.js"></script>
+
+    <style>
+        .container {
+            position: relative;
+            height: 500px;
+            width: 500px;
+            background-color: red;
+            /* overflow: hidden; */
+
+
+        }
+
+        .container>.draggable {
+            top: 50px;
+            /* left: 55px; */
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+
+
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* transform: translate3d(50px,50px,50px); */
+        }
+
+        .draggable:nth-child(1) {
+            /* transform: translate3d(20px,50px,10px); */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav></nav>
+    </header>
+
+    <main>
+
+        <div class="container">
+            <div class="draggable"></div>
+            <div class="draggable"></div>
+            <div class="draggable"></div>
+        </div>
+    </main>
+
+    <footer>
+    </footer>
+    <script>
+        // var a = document.querySelectorAll('.draggable')[0].DraggableJS();
+        // console.log(a);
+        var x = document.querySelectorAll('.draggable').DraggableJS({
+            info: 'info goes here',
+            containment:'parent',
+            axis:'xy'
+        });
+        // console.log(x);
+        // .apple();
+    </script>
+</body>
+
+</html>

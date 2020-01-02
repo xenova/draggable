@@ -8,25 +8,33 @@
     <style>
         .container {
             position: relative;
-            height: 600px;
-            width: 1000px;
+            height: 500px;
+            width: 500px;
             background-color: red;
-            /* overflow: hidden; */
 
+            perspective: 1500px;
+            transform: scale(1);
+            /* rotate(45deg) */
+            /* rotate3d(1, 0, 1, 50deg) */
+            /* overflow: hidden; */
+            /* transform: rotate3d(1, 0, 1, 0);
+            perspective: 1500px; */
 
         }
-*{
-    margin: 0;
-    padding: 0;
-}
-        .container>.draggable {
-            /* top: 50px; */
-            /* left: 55px; */
-            /* margin-left: 10px; */
-            width: 100px;
-            height: 100px;
-            background-color: blue;
 
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .container>.draggable {
+            /* top: 50px;
+            left: 55px;
+            margin-left: 10px; */
+            width: 110px;
+            height: 120px;
+            background-color: blue;
+            
 
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -38,9 +46,17 @@
             /* transform: translate3d(50px,50px,50px); */
         }
 
-        .draggable:nth-child(1) {
-            /* transform: translate3d(20px,50px,10px); */
-        }
+html,body{
+    
+    height: 100%;
+}
+main{
+    /* transform: scale(1.1); */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
     </style>
 </head>
 
@@ -64,8 +80,8 @@
         // var a = document.querySelectorAll('.draggable')[0].DraggableJS();
         // console.log(a);
         var x = document.querySelectorAll('.draggable').DraggableJS({
-            containment:'parent',
-            axis:'xy'
+            containment: 'parent',
+            axis: 'xy'
         });
         // console.log(x);
         // .apple();

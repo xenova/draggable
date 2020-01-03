@@ -136,15 +136,19 @@ Element.prototype.DraggableJS = function (o) {
                 var parentOffsetLength = (axis == 'x') ? (element.parentNode.offsetWidth) : (element.parentNode.offsetHeight);
                 var length = (axis == 'x') ? ('width') : ('height');
                 var transform = (axis == 'x') ? (cm.m41) : (cm.m42);;
-                var scale = (axis == 'x') ? (cm.m11) : (cm.m22);;
+                var scale = (axis == 'x') ? (cm.m11) : (cm.m22);
+                var tStyle = (getComputedStyle(self).transformOrigin.match(/(\d+)/gm)).map((i) => parseInt(i));
+                var transformOrigin = ((axis == 'x') ? tStyle[0] : tStyle[1]) / offsetLength;
+                // console.log(transformOrigin)
 
-                var k = ((1 - scale) * offsetLength) / 2;
-                var b = (transform + offsetPosition) + k;
-                var d = (parentOffsetLength - offsetLength) - (transform + offsetPosition) + k;
+                var k = (1 - scale) * offsetLength;
+                var k1 = k * transformOrigin;
+                var k2 = k * (1 - transformOrigin);
+                
+                var b = (transform + offsetPosition) + k1;
+                var d = (parentOffsetLength - offsetLength) - (transform + offsetPosition) + k2;
+
                 var a = (childInfo[axis] - parentInfo[axis] - b);//(b <= 0) ? (childInfo[axis] - parentInfo[axis] - b) : 0;
-
-                // console.log(childInfo[axis],parentInfo[axis],- b);
-
                 var c = ((childInfo[axis] + childInfo[length]) - (parentInfo[axis] + parentInfo[length]) + d);// (d <= 0) ? ((childInfo[axis] + childInfo[length]) - (parentInfo[axis] + parentInfo[length]) + d) : 0
 
                 var ax = parentInfo[axis] - childInfo[axis] + transform;
@@ -159,6 +163,7 @@ Element.prototype.DraggableJS = function (o) {
             switch (self.options.containment) {
                 case 'parent':
 
+                    console.log('==========');
                     x = restrict(x, 'x', self, cm, childInfo, parentInfo);
                     y = restrict(y, 'y', self, cm, childInfo, parentInfo);
 

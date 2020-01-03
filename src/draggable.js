@@ -34,10 +34,10 @@ Element.prototype.DraggableJS = function (o) {
         var matrix = getTransformMatrix(self);
         let cmp = getTransformMatrix(self.parentNode);
 
-        console.log(cmp);
+        //console.log(cmp);
         self.mouseDown = true;
         self.startX = (e.pageX - matrix.m41 * cmp.m11); // - matrix.m41, self.offsetLeft
-        console.log(self.startX);
+        //console.log(self.startX);
 
         self.startY = e.pageY - matrix.m42 * cmp.m22;//- self.offsetTop;
 
@@ -130,16 +130,75 @@ Element.prototype.DraggableJS = function (o) {
             // });
 
 
+            function restrict(value, axis, element, cm, childInfo, parentInfo) {
+                var offsetPosition = (axis == 'x') ? (element.offsetLeft) : (element.offsetTop);
+                var offsetLength = (axis == 'x') ? (element.offsetWidth) : (element.offsetHeight);
+                var parentOffsetLength = (axis == 'x') ? (element.parentNode.offsetWidth) : (element.parentNode.offsetHeight);
+                var length = (axis == 'x') ? ('width') : ('height');
+                var transform = (axis == 'x') ? (cm.m41) : (cm.m42);;
+                var scale = (axis == 'x') ? (cm.m11) : (cm.m22);;
+
+                var k = ((1 - scale) * offsetLength) / 2;
+                var b = (transform + offsetPosition) + k;
+                var d = (parentOffsetLength - offsetLength) - (transform + offsetPosition) + k;
+                var a = (childInfo[axis] - parentInfo[axis] - b);//(b <= 0) ? (childInfo[axis] - parentInfo[axis] - b) : 0;
+
+                // console.log(childInfo[axis],parentInfo[axis],- b);
+
+                var c = ((childInfo[axis] + childInfo[length]) - (parentInfo[axis] + parentInfo[length]) + d);// (d <= 0) ? ((childInfo[axis] + childInfo[length]) - (parentInfo[axis] + parentInfo[length]) + d) : 0
+
+                var ax = parentInfo[axis] - childInfo[axis] + transform;
+                var bx = parentInfo[length] - childInfo[length] + ax;
 
 
-            // console.log(cm);
+                // a = Math.max(a,0);
+                // console.log(ax);
+                return Math.min(Math.max(value, ax + a), bx + c);
+            }
+
             switch (self.options.containment) {
                 case 'parent':
-                    var a = 0;//cmp.m11;
+
+                    x = restrict(x, 'x', self, cm, childInfo, parentInfo);
+                    y = restrict(y, 'y', self, cm, childInfo, parentInfo);
+
+                    // var k = Math.floor(((1 - cm.m11) * self.offsetWidth) / 2);
+                    // var b = (cm.m41 + self.offsetLeft) + k;
+                    // var d = (self.parentNode.offsetWidth - self.offsetWidth) - (cm.m41 + self.offsetLeft) + k;
+                    // var a = (b <= 0) ? (childInfo['x'] - parentInfo['x'] - b) : 0;
+                    // var c = (d <= 0) ? ((childInfo['x'] + childInfo['width']) - (parentInfo['x'] + parentInfo['width']) + d) : 0
+
+                    // var ax = parentInfo['x'] - childInfo['x'] + cm.m41;
+                    // var bx = parentInfo['width'] - childInfo['width'] + ax;
+                    // x = Math.min(Math.max(x, ax + a), bx + c);
+
+                    //console.log(x)
+
+
+                    ///////////////
+                    //console.log(cm);
+                    // var b = cm.m42 + self.offsetTop;
+                    // var d = (self.parentNode.offsetHeight - self.offsetHeight) - (b)
+                    // var k = ((1 - cm.m22) * self.offsetHeight) / 2;
+                    // var a = (b <= 0) ? (childInfo['y'] - parentInfo['y'] - b - k) : 0;
+                    // var c = (d <= 0) ? ((childInfo['y'] + childInfo['height']) - (parentInfo['y'] + parentInfo['height']) + d + k) : 0
+
+                    // var ay = parentInfo['y'] - childInfo['y'] + cm.m42;
+                    // var by = parentInfo['height'] - childInfo['height'] + ay;
+                    // y = Math.min(Math.max(y, ay + a), by + c);
+
+
+
+
+
+
+
+
+                    //Math.min(,123);//cmp.m11;
                     // console.log(parentInfo['width']);
 
                     // console.log(parentInfo['width']/self.parentNode.offsetWidth);
-                    console.log(parentInfo['height'],self.parentNode.offsetHeight);
+                    //console.log(parentInfo['height'],self.parentNode.offsetHeight);
                     // console.log(parentInfo['height']/self.parentNode.offsetHeight);
                     //console.log(Math.acos(parentInfo['width']/self.parentNode.offsetWidth))
 
@@ -185,16 +244,13 @@ Element.prototype.DraggableJS = function (o) {
                     // if()
                     // console.log(self.parentNode.offsetWidth,parentInfo['width']);
                     //console.log(childInfo['height'],self.offsetHeight);
-                    var ax = parentInfo['x'] - childInfo['x'] + cm.m41;
-                    var bx = parentInfo['width'] - childInfo['width'] + ax;
-                    x = Math.min(Math.max(x, ax), bx);
-
-                    // console.log(self.parentNode.offsetHeight, parentInfo['height'])
 
 
-                    var ay = parentInfo['y'] - childInfo['y'] + cm.m42;
-                    var by = parentInfo['height'] - childInfo['height'] + ay;
-                    y = Math.min(Math.max(y, ay + a), by);
+
+
+
+
+
                     // +48
                     // var x1 = self.offsetLeft - (childInfo['width'] / cmp.m11 - self.offsetWidth) / 2;
                     // //console.log(cmp.m11,cmp.m11*1.08);

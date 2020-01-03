@@ -113,7 +113,7 @@ Element.prototype.DraggableJS = function (o) {
             // console.log(self.offsetLeft,childInfo['left']);
             let x = (e.pageX - self.startX) / cmp.m11;
 
-            //console.log(x);
+            console.log((e.pageX - self.startX));
             let y = (e.pageY - self.startY) / cmp.m22;
             // console.log('x: '+x);
             // console.log(x);
@@ -163,7 +163,6 @@ Element.prototype.DraggableJS = function (o) {
             switch (self.options.containment) {
                 case 'parent':
 
-                    console.log('==========');
                     x = restrict(x, 'x', self, cm, childInfo, parentInfo);
                     y = restrict(y, 'y', self, cm, childInfo, parentInfo);
 
@@ -277,8 +276,8 @@ Element.prototype.DraggableJS = function (o) {
                     break;
             }
 
-            x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? x : 0;
-            y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? y : 0;
+            x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? x : cm.m41;
+            y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? y : cm.m42;
 
             // console.log(x,y)
             self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';

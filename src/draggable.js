@@ -112,8 +112,6 @@ Element.prototype.DraggableJS = function (o) {
 
             // console.log(self.offsetLeft,childInfo['left']);
             let x = (e.pageX - self.startX) / cmp.m11;
-
-            console.log((e.pageX - self.startX));
             let y = (e.pageY - self.startY) / cmp.m22;
             // console.log('x: '+x);
             // console.log(x);
@@ -144,7 +142,7 @@ Element.prototype.DraggableJS = function (o) {
                 var k = (1 - scale) * offsetLength;
                 var k1 = k * transformOrigin;
                 var k2 = k * (1 - transformOrigin);
-                
+
                 var b = (transform + offsetPosition) + k1;
                 var d = (parentOffsetLength - offsetLength) - (transform + offsetPosition) + k2;
 

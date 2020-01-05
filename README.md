@@ -98,3 +98,5 @@ Functions for draggable elements:
   let element = document.getElementById('drag');
   element.setPosition(100,200); // In pixels
   ```
+
+## Examples

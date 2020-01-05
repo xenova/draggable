@@ -7,6 +7,10 @@
 
     <style>
         .container {
+            /* animation-name: example;
+            animation-duration: 10s;
+            animation-iteration-count: infinite; */
+            transform: translate3d(0, 0, 0) perspective(1250px) rotate3d(1, 1, 1, 15deg) skew(12deg, 0);
             position: relative;
             height: 500px;
             max-height: 500px;
@@ -18,7 +22,6 @@
             background-color: rgba(255, 0, 0, 0.5);
             transform-style: preserve-3d;
             /* perspective(1000px)  rotateY(45deg) scale(0.8) */
-            transform: translate3d(0, 0, 0) perspective(1250px) rotateY(42deg) rotateX(12deg) skewX(-10deg) rotateZ(0deg);
             /* transform: rotate3d(0, 1, 0, 25deg); */
 
             /*  scaleX(0.75) scaleY(1.1) */
@@ -76,6 +79,29 @@
             align-items: center;
             position: relative;
         }
+
+        /* @keyframes example {
+            0% {
+                transform: translate3d(0, 0, 0) perspective(0px) rotate3d(1,1,1,-15deg) skew(0,0);
+
+            }
+
+            25% {
+                transform: translate3d(50px, 0, 0) perspective(1000px) rotate3d(1,1,1,15deg) skew(0,0);
+            }
+
+            50% {
+                transform: translate3d(50px, 50px, 0) perspective(1500px) rotate3d(1,1,1,15deg) skew(0,0);
+            }
+
+            75% {
+                transform: translate3d(0px, 50px, 0) perspective(1000px) rotate3d(1,0,1,15deg) skew(0,0);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0) perspective(0px) rotate3d(1,1,1,15deg) skew(0,0);
+            }
+        } */
     </style>
 </head>
 
@@ -88,6 +114,7 @@
 
         <div class="container">
             <div id="drag-element" class="draggable"></div>
+            <div class="draggable"></div>
         </div>
         <div style="display: flex;flex-direction:column;">
             <button onclick="getPosition()">Get position</button>
@@ -99,26 +126,31 @@
     <footer>
     </footer>
     <script>
-        // var a = document.querySelectorAll('.draggable')[0].DraggableJS();
-        // console.log(a);
-        var x = document.querySelectorAll('.draggable').DraggableJS({
-            containment: 'parent',
-            axis: 'xy'
+        
+        document.querySelectorAll('.draggable').DraggableJS({
+            // axis: 'xy',
+            start: function () {
+                console.log('start');
+                console.log(this);
+            },
+            drag: function () {
+                console.log('drag');
+            },
+            end: function () {
+                console.log('end');
+            }
         });
 
         function getPosition() {
             var elem = document.getElementById('drag-element');
-
             console.log(elem.getPosition());
         }
 
-        function setPosition(left,top){
+        function setPosition(left, top) {
             var elem = document.getElementById('drag-element');
-            elem.setPosition('10%','50%');
-            // '10%','40%'
+            elem.setPosition(10, 10);
         }
-        // console.log(x);
-        // .apple();
+
     </script>
 </body>
 

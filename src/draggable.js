@@ -7,16 +7,20 @@ Element.prototype.DraggableJS = function (o) {
 
     //default options
     const defaultOptions = {
-        containment: 'none', //parent, none
         axis: 'xy', //x, y, xy
-        //momentum: true,
+
+        start: function (e) {
+        },
+        drag: function (e) {
+        },
+        end: function (e) {
+        }
     }
     /**
      * Future additions:
-     *  - Containment (document, window)
+     *  - Containment (parent, document, window)
      *  - Momentum (true/false)
      *  - Axis (z)
-     *  
      */
 
     self.options = Object.assign({}, defaultOptions, o);
@@ -28,6 +32,9 @@ Element.prototype.DraggableJS = function (o) {
     }, { passive: false });
 
     addMultipleEventListener(self, 'mousedown touchstart', function (e) {
+
+        self.options.start.call(e);
+
         let event = getPointerEvent(e);
         let matrix = getTransformMatrix(self);
         let cmp = getTransformMatrix(self.parentNode);
@@ -37,15 +44,19 @@ Element.prototype.DraggableJS = function (o) {
     });
 
     addMultipleEventListener(document, 'mouseup touchend', function (e) {
+        if(self.mouseDown){
+            self.options.end.call(e);
+        }
         self.mouseDown = false;
+        
     });
 
     addMultipleEventListener(document, 'mousemove touchmove', function (e) {
-        let event = getPointerEvent(e);
-
         if (self.mouseDown) {
-            let parentInfo = self.parentNode.getBoundingClientRect(self.parentNode);
-            let childInfo = self.getBoundingClientRect(self);
+            self.options.drag.call(e);
+            let event = getPointerEvent(e);
+            let parentInfo = self.parentNode.getBoundingClientRect();
+            let childInfo = self.getBoundingClientRect();
             let cm = getTransformMatrix(self);
             let cmp = getTransformMatrix(self.parentNode);
 
@@ -78,23 +89,16 @@ Element.prototype.DraggableJS = function (o) {
                 return Math.min(Math.max(value, ax + a), bx + c);
             }
 
-            switch (self.options.containment) {
-                case 'parent':
-                    x = restrict(x, 'x');
-                    y = restrict(y, 'y');
-                    break;
-                case 'document':
-                    break;
-                case 'window':
-                    break;
-            }
-
-            x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? x : cm.m41;
-            y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? y : cm.m42;
+            x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? restrict(x, 'x') : cm.m41;
+            y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? restrict(y, 'y') : cm.m42;
 
             self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
+
         }
     });
+
+
+
 
     function addMultipleEventListener(element, events, handler, args) {
         events.split(' ').forEach(e => element.addEventListener(e, handler, args))
@@ -123,72 +127,31 @@ Element.prototype.DraggableJS = function (o) {
 
     self.getPosition = function () {
 
-        
-        let percentages = {};
-
+        let matrix = getTransformMatrix(this);
         let left = {};
+        left.pixels = matrix.m41 + this.offsetLeft;
+        left.percentage = left.pixels / this.parentNode.offsetWidth;
+
         let top = {};
-
-        switch (self.options.containment) {
-            case 'parent':
-                let matrix = getTransformMatrix(this);
-
-                left.pixels = matrix.m41 + this.offsetLeft;
-                left.percentage = left.pixels / this.parentNode.offsetWidth;
-
-                top.pixels = matrix.m42 + this.offsetTop;
-                top.percentage = top.pixels / this.parentNode.offsetHeight;
-                break;
-            // case 'document':
-            //     break;
-            // case 'window':
-            //     break;
-            default:
-                let bounds = this.getBoundingClientRect(this);
-
-                left.pixels = bounds.x;
-                left.percentage = left.pixels / this.parentNode.offsetWidth;
-
-                top.pixels = bounds.y;
-                top.percentage = top.pixels / this.parentNode.offsetHeight;
-                break;
-        }
+        top.pixels = matrix.m42 + this.offsetTop;
+        top.percentage = top.pixels / this.parentNode.offsetHeight;
 
         return {
-            left:left,
-            top:top,
+            left: left,
+            top: top,
         };
     }
 
-    self.setPosition = function(left, top){
+    self.setPosition = function (left, top) {
+        left = '' + left;
+        top = '' + top;
+
+        let x = parseFloat(left) - self.offsetLeft;// 
+        let y = parseFloat(top) - self.offsetTop;//
+
         let cm = getTransformMatrix(self);
-        let x =  parseFloat(left);
-        let y = parseFloat(top);
-
-        let parent = null;
-        // switch (self.options.containment) {
-        //     case 'parent':
-        //         parent = self.parentNode;
-        //         break;
-        //     // case 'document':
-        //     //     break;
-        //     // case 'window':
-        //     //     break;
-        //     default:
-        //         parent = document.documentElement;
-        //         break;
-        // }
-
-
-        if(!left.endsWith('px')){
-            //var a = parseFloat(left)/(left.endsWith('%')?100:1);
-        }
-        
-        console.log(parseFloat(left));
-
-
-        
         self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
+
     }
 }
 

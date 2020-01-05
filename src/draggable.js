@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 Element.prototype.DraggableJS = function (o) {
     const self = this;
 
@@ -118,6 +119,76 @@ Element.prototype.DraggableJS = function (o) {
         } else {
             return (e instanceof TouchEvent);
         }
+    }
+
+    self.getPosition = function () {
+
+        
+        let percentages = {};
+
+        let left = {};
+        let top = {};
+
+        switch (self.options.containment) {
+            case 'parent':
+                let matrix = getTransformMatrix(this);
+
+                left.pixels = matrix.m41 + this.offsetLeft;
+                left.percentage = left.pixels / this.parentNode.offsetWidth;
+
+                top.pixels = matrix.m42 + this.offsetTop;
+                top.percentage = top.pixels / this.parentNode.offsetHeight;
+                break;
+            // case 'document':
+            //     break;
+            // case 'window':
+            //     break;
+            default:
+                let bounds = this.getBoundingClientRect(this);
+
+                left.pixels = bounds.x;
+                left.percentage = left.pixels / this.parentNode.offsetWidth;
+
+                top.pixels = bounds.y;
+                top.percentage = top.pixels / this.parentNode.offsetHeight;
+                break;
+        }
+
+        return {
+            left:left,
+            top:top,
+        };
+    }
+
+    self.setPosition = function(left, top){
+        let cm = getTransformMatrix(self);
+        let x =  parseFloat(left);
+        let y = parseFloat(top);
+
+        let parent = null;
+        // switch (self.options.containment) {
+        //     case 'parent':
+        //         parent = self.parentNode;
+        //         break;
+        //     // case 'document':
+        //     //     break;
+        //     // case 'window':
+        //     //     break;
+        //     default:
+        //         parent = document.documentElement;
+        //         break;
+        // }
+
+
+        if(!left.endsWith('px')){
+            //var a = parseFloat(left)/(left.endsWith('%')?100:1);
+        }
+        
+        console.log(parseFloat(left));
+
+
+        
+        self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
     }
 }
 

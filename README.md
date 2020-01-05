@@ -33,7 +33,7 @@ Apply options by passing in an array of zero or more of the following key-value 
 | `drag` | Specifies the function to be called when the item is being dragged | Any function | `function(){}` |
 | `end` | Specifies the function to be called when the drag event ends | Any function | `function(){}` |
 
-Code example:
+#### Code example:
 ```javascript
 let options = {
   axis: 'xy',

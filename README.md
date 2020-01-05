@@ -15,6 +15,16 @@ Add a reference to the script by either linking to https://xenova.github.io/Drag
 
 ### Usage
 Select an element (or elements) and run the `DraggableJS()` function on it.
+
+##### HTML:
+```html
+<div class="container">
+  <div id="drag" class="draggable"></div>
+  <div class="draggable"></div>
+</div>
+```
+
+##### JAVASCRIPT:
 ```javascript
 // On a single element
 document.getElementById('drag').DraggableJS();

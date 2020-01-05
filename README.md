@@ -43,7 +43,7 @@ Apply options by passing in an array of zero or more of the following key-value 
 | `drag` | Specifies the function to be called when the item is being dragged | Any function | `function(){}` |
 | `end` | Specifies the function to be called when the drag event ends | Any function | `function(){}` |
 
-#### Code example:
+##### Example:
 ```javascript
 let options = {
   axis: 'xy',
@@ -60,3 +60,41 @@ let options = {
 document.querySelectorAll('.draggable').DraggableJS(options);
 
 ```
+
+### Methods
+Functions for draggable elements:
+
+| Method | Description | 
+| --- | --- |
+| `getPosition()` | Returns the current position of the element, relative to its parent |
+| `setPosition(left, top)` | Sets an element's position, relative to its parent |
+
+
+* ##### `getPosition()`:
+  ```javascript
+  
+  let element = document.getElementById('drag');
+  let position = element.getPosition();
+  console.log(position);
+  ```
+
+  ###### Example output:
+  ```console
+  {
+    left: {
+      pixels: 100
+      percentage: 0.125
+    },
+    top: {
+      pixels: 10
+      percentage: 0.02
+    }
+  }
+  ```
+
+* ##### `setPosition(left, top)`:
+  ```javascript
+  
+  let element = document.getElementById('drag');
+  element.setPosition(100,200);
+  ```

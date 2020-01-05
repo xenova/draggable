@@ -2,31 +2,19 @@
 <html>
 
 <head>
-
-    <script src="https://xenova.github.io/Draggable/dist/draggable.min.js"></script>
-
+    <script src="../src/draggable.js"></script>
+    <!-- <script src="https://xenova.github.io/Draggable/dist/draggable.min.js"></script>
+    <script src="../src/draggable.js"></script> -->
     <style>
-        .container {
+        /* .container {
             transform: translate3d(0, 0, 0) perspective(1250px) rotate3d(1, 1, 1, 15deg) skew(12deg, 0);
             position: relative;
             height: 500px;
             max-height: 500px;
             min-width: 800px;
 
-            
-
             background-color: rgba(255, 0, 0, 0.5);
             transform-style: preserve-3d;
-            /* perspective(1000px)  rotateY(45deg) scale(0.8) */
-            /* transform: rotate3d(0, 1, 0, 25deg); */
-
-            /*  scaleX(0.75) scaleY(1.1) */
-            /* rotate(45deg) */
-            /* rotate3d(1, 0, 1, 50deg) */
-            /* overflow: hidden; */
-            /* transform: rotate3d(1, 0, 1, 0);
-            perspective: 1500px; */
-
         }
 
         * {
@@ -37,28 +25,10 @@
         .container>.draggable {
             top: 120px;
             left: 150px;
-            /*  */
-
-
-            /* transform-origin: 0% 0%; */
-            /* transform: scaleX(0.8) scaleY(1.13) translate3d(20px,50px,0); */
-            /* transform: translateZ(-15px); */
-            /* transform: translateZ(-15px); */
-            /* transform: skewX(50deg); */
-            /* top: 50px;
-            left: 55px;
-            margin-left: 10px; */
             width: 110px;
             height: 120px;
-            /* background-color: blue; */
             background: url(https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);
             background-size: cover;
-
-
-
-
-            /* transform: rotate(12deg); */
-            /* transform: translate3d(50px,50px,50px); */
         }
 
         html,
@@ -74,9 +44,9 @@
             justify-content: center;
             align-items: center;
             position: relative;
-        }
-        
+        } */
     </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -84,9 +54,63 @@
         <nav></nav>
     </header>
 
-    <main>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            /* font-family: 'Roboto', sans-serif; */
+            /* border: solid 1px; */
+        }
 
-        <div class="container">
+        .example-container {
+            height: 720px;
+            width: 100%;
+            /* background-color: red; */
+
+            display: flex;
+        }
+        .example-container>.code>textarea{
+            height: 720px;
+            resize: none;
+        }
+        .example-container>.code {
+            display: flex;
+            flex-direction: column;
+            /* width: 320px; */
+            /* font-family: "Courier New"
+                Courier monospace; */
+        }
+
+        .example-container>.output {
+            /* flex-grow: 1; */
+        }
+    </style>
+    <main>
+        <section class="example-container">
+            <div class="code">
+
+                <blockquote><pre><code>&lt;link href=&quot;https://fonts.googleapis.com/css?family=Roboto&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;</code></pre></blockquote>
+                <textarea disabled><script src="apple"></script></textarea>
+                <code>JS goes here</code>
+                <code>CSS goes here</code>
+            </div>
+            <iframe height="100%" style="width: 100%;" scrolling="no" title="(1) Basic | Draggable" src="https://codepen.io/xenova/embed/MWYOMZB?theme-id=dark&default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+                See the Pen <a href='https://codepen.io/xenova/pen/MWYOMZB'>(1) Basic | Draggable</a> by Joshua Lochner
+                (<a href='https://codepen.io/xenova'>@xenova</a>) on <a href='https://codepen.io'>CodePen</a>.
+              </iframe>
+            <!-- <iframe class="output" height="720" style="width: 100%;" scrolling="no" title="(1) Basic | Draggable" src="https://codepen.io/xenova/embed/MWYOMZB?height=329&theme-id=default&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+                See the Pen <a href='https://codepen.io/xenova/pen/MWYOMZB'>(1) Basic | Draggable</a> by Joshua Lochner
+                (<a href='https://codepen.io/xenova'>@xenova</a>) on <a href='https://codepen.io'>CodePen</a>.
+              </iframe> -->
+              
+            <!-- <div class="output">output goes here</div> -->
+        </section>
+        <section class="example-container">
+
+        </section>
+        <section class="example-container">123</section>
+        <!-- <div class="container">
             <div id="drag-element" class="draggable"></div>
             <div class="draggable"></div>
         </div>
@@ -94,13 +118,13 @@
             <button onclick="getPosition()">Get position</button>
             <br>
             <button onclick="setPosition()">Set position</button>
-        </div>
+        </div> -->
     </main>
 
     <footer>
     </footer>
     <script>
-        
+
         document.querySelectorAll('.draggable').DraggableJS({
             // axis: 'xy',
             start: function () {

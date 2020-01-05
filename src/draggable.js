@@ -21,8 +21,8 @@ Element.prototype.DraggableJS = function (o) {
 
     self.options = Object.assign({}, defaultOptions, o);
     self.mouseDown = false;
-    self.style.cssText = 'position:absolute; transform-style:preserve-3d; -webkit-touch-callout: none; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;';
-    // self.parentNode.style.cssText += ';will-change: transform;';
+    self.style.cssText = 'position:absolute;will-change: transform;transform-style:preserve-3d; -webkit-touch-callout: none; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;';
+    self.parentNode.style.cssText = 'will-change: transform;transform-style: preserve-3d;';
 
     addMultipleEventListener(self, 'touchmove', function (e) {
         e.preventDefault();
@@ -133,11 +133,8 @@ Element.prototype.DraggableJS = function (o) {
     }
 
     self.setPosition = function (left, top) {
-        left = '' + left;
-        top = '' + top;
-
-        let x = parseFloat(left) - self.offsetLeft;// 
-        let y = parseFloat(top) - self.offsetTop;//
+        let x = parseFloat('' + left) - self.offsetLeft;// 
+        let y = parseFloat('' + top) - self.offsetTop;//
 
         let cm = getTransformMatrix(self);
         self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';

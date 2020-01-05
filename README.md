@@ -1,5 +1,5 @@
 # Draggable
-A lightweight framework for creating draggable elements in JavaScript - using CSS Transform!
+A lightweight JavaScript framework for creating draggable HTML elements - using CSS Transform!
 
 ## Getting Started
 ### Linking to the script

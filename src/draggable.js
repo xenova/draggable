@@ -1,7 +1,3 @@
-/**
- * 
- */
-
 Element.prototype.DraggableJS = function (o) {
     const self = this;
 
@@ -26,34 +22,31 @@ Element.prototype.DraggableJS = function (o) {
     self.options = Object.assign({}, defaultOptions, o);
     self.mouseDown = false;
     self.style.cssText = 'position:absolute; transform-style:preserve-3d; -webkit-touch-callout: none; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;';
+    // self.parentNode.style.cssText += ';will-change: transform;';
 
     addMultipleEventListener(self, 'touchmove', function (e) {
         e.preventDefault();
     }, { passive: false });
 
     addMultipleEventListener(self, 'mousedown touchstart', function (e) {
-
-        self.options.start.call(e);
-
         let event = getPointerEvent(e);
         let matrix = getTransformMatrix(self);
         let cmp = getTransformMatrix(self.parentNode);
 
         self.mouseDown = pointerEventDown(e);
         self.start = [event.pageX - matrix.m41 * cmp.m11, event.pageY - matrix.m42 * cmp.m22];
+        self.options.start.call(e);
     });
 
     addMultipleEventListener(document, 'mouseup touchend', function (e) {
-        if(self.mouseDown){
+        if (self.mouseDown) {
+            self.mouseDown = false;
             self.options.end.call(e);
         }
-        self.mouseDown = false;
-        
     });
 
     addMultipleEventListener(document, 'mousemove touchmove', function (e) {
         if (self.mouseDown) {
-            self.options.drag.call(e);
             let event = getPointerEvent(e);
             let parentInfo = self.parentNode.getBoundingClientRect();
             let childInfo = self.getBoundingClientRect();
@@ -94,11 +87,9 @@ Element.prototype.DraggableJS = function (o) {
 
             self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
 
+            self.options.drag.call(e);
         }
     });
-
-
-
 
     function addMultipleEventListener(element, events, handler, args) {
         events.split(' ').forEach(e => element.addEventListener(e, handler, args))
@@ -126,7 +117,6 @@ Element.prototype.DraggableJS = function (o) {
     }
 
     self.getPosition = function () {
-
         let matrix = getTransformMatrix(this);
         let left = {};
         left.pixels = matrix.m41 + this.offsetLeft;

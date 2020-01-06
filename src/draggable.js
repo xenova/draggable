@@ -41,11 +41,14 @@ Element.prototype.DraggableJS = function (o) {
         let event = getPointerEvent(e);
         let matrix = getTransformMatrix(self);
         let cmp = getTransformMatrix(self.parentNode);
+        let childInfo = self.getBoundingClientRect();
+        let bodyInfo = document.body.getBoundingClientRect();
 
         self.mouseDown = pointerEventDown(e);
         self.start = [event.pageX - matrix.m41 * cmp.m11, event.pageY - matrix.m42 * cmp.m22];
-        self.startOffset = [event.offsetX, event.offsetY]
-        self.options.start.call(e);
+        self.startOffset = [event.offsetX || event.pageX - (childInfo.left - bodyInfo.left), event.offsetY || event.pageY - (childInfo.top - bodyInfo.top)]
+
+        self.options.start.call(self, e);
     });
 
 
@@ -60,6 +63,7 @@ Element.prototype.DraggableJS = function (o) {
             // self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
 
             if (self.options.grid.dragEndSnap) {
+
                 let cm = getTransformMatrix(self);
                 snapToGrid(cm.m41, cm.m42);
                 // snapToGrid(x+self.offsetLeft, y+self.offsetTop);
@@ -68,7 +72,7 @@ Element.prototype.DraggableJS = function (o) {
 
 
 
-            self.options.end.call(e);
+            self.options.end.call(self, e);
 
 
 
@@ -117,12 +121,13 @@ Element.prototype.DraggableJS = function (o) {
             y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? restrict(y, 'y') : cm.m42;
 
             if (self.options.grid.dragSnap) {
+
                 snapToGrid(x, y);
             } else {
                 translate(cm, x, y);
             }
 
-            self.options.drag.call(e);
+            self.options.drag.call(self, e);
         }
     });
 
@@ -140,7 +145,7 @@ Element.prototype.DraggableJS = function (o) {
         self.setPosition(x, y);
     }
 
-    self.setGridPosition = function(row, col) {
+    self.setGridPosition = function (row, col) {
         let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
         let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
 

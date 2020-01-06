@@ -35,6 +35,7 @@ Element.prototype.DraggableJS = function (o) {
 
         self.mouseDown = pointerEventDown(e);
         self.start = [event.pageX - matrix.m41 * cmp.m11, event.pageY - matrix.m42 * cmp.m22];
+        self.startOffset = [event.offsetX, event.offsetY]
         self.options.start.call(e);
     });
 
@@ -82,8 +83,33 @@ Element.prototype.DraggableJS = function (o) {
                 return Math.min(Math.max(value, ax + a), bx + c);
             }
 
+            var a = x;
+
             x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? restrict(x, 'x') : cm.m41;
             y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? restrict(y, 'y') : cm.m42;
+
+
+            let rows = 5;
+            let cols = 6;
+            var colWidth = (self.parentNode.offsetWidth / cols);
+
+            var paddingLeft = (self.offsetWidth - colWidth) / 2
+
+            console.log(self.startOffset);
+
+            // console.log((x + self.offsetLeft)/colWidth,event.offsetX);
+
+            // console.log(self.offsetLeft,((event.pageX - self.start[0]) / cmp.m11));
+            // console.log((x + self.offsetLeft + ));
+            var a = Math.round((x + self.offsetLeft-(self.offsetWidth/2-self.startOffset[0])) / colWidth);
+
+            // - paddingLeft
+            //-(63- self.startOffset[0]
+            x = a * colWidth - self.offsetLeft -paddingLeft;
+            // 
+            // 
+            // 
+            // +self.offsetLeft
 
             self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
 

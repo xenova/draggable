@@ -10,16 +10,24 @@
             /* animation-name: example;
             animation-duration: 10s;
             animation-iteration-count: infinite; */
-            /* transform: translate3d(0, 0, 0) perspective(1250px) rotate3d(1, 1, 1, 15deg) skew(12deg, 0); */
+            /* transform: translate3d(20px, 0, 0) perspective(1850px) rotate3d(1, 1, 1, 15deg) skew(12deg, 55deg); */
             position: relative;
-            height: 500px;
-            max-height: 500px;
-            min-width: 800px;
+            height: 600px;
+            min-height: 600px;
+            /* max-height: 500px; */
+            width: 600px;
+            min-width: 600px;
 
 
+            /* transform: scale(0.5); */
             will-change: transform;
 
-            background-color: rgba(255, 0, 0, 0.5);
+            background-image: url(chess_assets/board.svg);
+            background-size: 100%;
+            /* border: solid 4px; */
+            outline: solid 4px;
+            background-position: center;
+            /* background-color: rgba(255, 0, 0, 0.5); */
             transform-style: preserve-3d;
             /* perspective(1000px)  rotateY(45deg) scale(0.8) */
             /* transform: perspective(1000px) rotate3d(0, 1, 0, 25deg); */
@@ -39,8 +47,8 @@
         }
 
         .container>.draggable {
-            top: 120px;
-            left: 150px;
+            /* top: 120px;
+            left: 150px; */
             /*  */
 
 
@@ -52,12 +60,11 @@
             /* top: 50px;
             left: 55px;
             margin-left: 10px; */
-            width: 134px;
+            /* width: 134px; */
+            width: calc(100% / 8);
             /* width: calc(100% / 6); */
-            height: 120px;
+            height: calc(100% / 8);
             /* background-color: blue; */
-            background: url(https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);
-            background-size: cover;
 
 
 
@@ -114,32 +121,72 @@
     <main>
 
         <div class="container">
-            <div id="drag-element" class="draggable"></div>
-            <div class="draggable"></div>
+            <span class="draggable piece bk" row=0 col=4></span>
+            <span class="draggable piece bq" row=0 col=3></span>
+            <span class="draggable piece bb" row=0 col=2></span>
+            <span class="draggable piece bn" row=0 col=1></span>
+            <span class="draggable piece br" row=0 col=0></span>
+            <span class="draggable piece bp" row=1 col=4></span>
         </div>
-        <div style="display: flex;flex-direction:column;">
+
+        <style>
+            .piece {
+                background-size: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+
+            .bk {
+                background-image: url(chess_assets/bk.svg);
+            }
+
+            .bq {
+                background-image: url(chess_assets/bq.svg);
+            }
+
+            .bb {
+                background-image: url(chess_assets/bb.svg);
+            }
+
+            .bn {
+                background-image: url(chess_assets/bn.svg);
+            }
+
+            .br {
+                background-image: url(chess_assets/br.svg);
+            }
+
+            .bp {
+                background-image: url(chess_assets/bp.svg);
+            }
+        </style>
+        <!-- <div style="display: flex;flex-direction:column;">
             <button onclick="getPosition()">Get position</button>
             <br>
             <button onclick="setPosition()">Set position</button>
-        </div>
+        </div> -->
     </main>
 
     <footer>
     </footer>
     <script>
-        
+
         document.querySelectorAll('.draggable').DraggableJS({
             // axis: 'xy',
             start: function () {
-                console.log('start');
-                console.log(this);
+                // console.log('start');
+                // console.log(this);
             },
             drag: function () {
-                console.log('drag');
+                //console.log('drag');
             },
             end: function () {
-                console.log('end');
-            }
+                //console.log('end');
+            },
+            init: function () {
+                this.setGridPosition(this.getAttribute('row'),this.getAttribute('col'));
+                console.log(this.getAttribute('row'));
+            },
         });
 
         function getPosition() {

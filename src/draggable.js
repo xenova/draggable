@@ -10,7 +10,16 @@ Element.prototype.DraggableJS = function (o) {
         drag: function (e) {
         },
         end: function (e) {
-        }
+        },
+        init: function (e) {
+        },
+        grid: {
+            rows: 8,
+            columns: 8,
+            dragEndSnap: true,
+            dragSnap: false,//true or false
+        },
+
     }
     /**
      * Future additions:
@@ -39,10 +48,30 @@ Element.prototype.DraggableJS = function (o) {
         self.options.start.call(e);
     });
 
+
     addMultipleEventListener(document, 'mouseup touchend', function (e) {
+
         if (self.mouseDown) {
             self.mouseDown = false;
+
+
+
+            // let cmp = getTransformMatrix(self.parentNode);
+            // self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
+
+            if (self.options.grid.dragEndSnap) {
+                let cm = getTransformMatrix(self);
+                snapToGrid(cm.m41, cm.m42);
+                // snapToGrid(x+self.offsetLeft, y+self.offsetTop);
+                // snapToGrid();
+            }
+
+
+
             self.options.end.call(e);
+
+
+
         }
     });
 
@@ -83,39 +112,46 @@ Element.prototype.DraggableJS = function (o) {
                 return Math.min(Math.max(value, ax + a), bx + c);
             }
 
-            var a = x;
 
             x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? restrict(x, 'x') : cm.m41;
             y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? restrict(y, 'y') : cm.m42;
 
-
-            let rows = 5;
-            let cols = 6;
-            var colWidth = (self.parentNode.offsetWidth / cols);
-
-            var paddingLeft = (self.offsetWidth - colWidth) / 2
-
-            console.log(self.startOffset);
-
-            // console.log((x + self.offsetLeft)/colWidth,event.offsetX);
-
-            // console.log(self.offsetLeft,((event.pageX - self.start[0]) / cmp.m11));
-            // console.log((x + self.offsetLeft + ));
-            var a = Math.round((x + self.offsetLeft-(self.offsetWidth/2-self.startOffset[0])) / colWidth);
-
-            // - paddingLeft
-            //-(63- self.startOffset[0]
-            x = a * colWidth - self.offsetLeft -paddingLeft;
-            // 
-            // 
-            // 
-            // +self.offsetLeft
-
-            self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
+            if (self.options.grid.dragSnap) {
+                snapToGrid(x, y);
+            } else {
+                translate(cm, x, y);
+            }
 
             self.options.drag.call(e);
         }
     });
+
+
+    function snapToGrid(x, y) {
+        let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
+        let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
+
+        let paddingLeft = (self.offsetWidth - colWidth) / 2;
+        let paddingTop = (self.offsetHeight - rowWidth) / 2;
+
+        x = Math.round((x + self.offsetLeft - (self.offsetWidth / 2 - self.startOffset[0])) / colWidth) * colWidth - paddingLeft;
+        y = Math.round((y + self.offsetTop - (self.offsetHeight / 2 - self.startOffset[1])) / rowWidth) * rowWidth - paddingTop;
+
+        self.setPosition(x, y);
+    }
+
+    self.setGridPosition = function(row, col) {
+        let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
+        let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
+
+        let paddingLeft = (self.offsetWidth - colWidth) / 2;
+        let paddingTop = (self.offsetHeight - rowWidth) / 2;
+
+        x = Math.round(col * colWidth - paddingLeft);
+        y = Math.round(row * rowWidth - paddingTop);
+
+        self.setPosition(x, y);
+    }
 
     function addMultipleEventListener(element, events, handler, args) {
         events.split(' ').forEach(e => element.addEventListener(e, handler, args))
@@ -162,10 +198,14 @@ Element.prototype.DraggableJS = function (o) {
         let x = parseFloat('' + left) - self.offsetLeft;// 
         let y = parseFloat('' + top) - self.offsetTop;//
 
-        let cm = getTransformMatrix(self);
-        self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
+        translate(getTransformMatrix(self), x, y)
 
     }
+    function translate(cm, x, y) {
+        self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
+    }
+
+    self.options.init.call(self);
 }
 
 NodeList.prototype.DraggableJS = function (n) {

@@ -55,7 +55,7 @@ let options = {
   },
   end: function(){
     console.log('Drag ended');
-  },
+  }
 };
 document.querySelectorAll('.draggable').DraggableJS(options);
 

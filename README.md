@@ -39,22 +39,33 @@ Apply options by passing in an array of zero or more of the following key-value 
 | Option | Description | Allowed values | Default | 
 | --- | --- | --- | --- |
 | `axis` | Specifies which axis/axes the element will be fixed to | `'x'`, `'y'`, `'xy'` | `axis: 'xy'` |
-| `start` | Specifies the function to be called when the drag event starts | Any function | `function(){}` |
-| `drag` | Specifies the function to be called when the item is being dragged | Any function | `function(){}` |
-| `end` | Specifies the function to be called when the drag event ends | Any function | `function(){}` |
+| `init` | Called when `DraggableJS()` is run on an element  | Any function | `function(e){}` |
+| `start` | Specifies the function to be called when the drag event starts | Any function | `function(e){}` |
+| `drag` | Specifies the function to be called when the item is being dragged | Any function | `function(e){}` |
+| `end` | Specifies the function to be called when the drag event ends | Any function | `function(e){}` |
+| `grid` | Specifies whether a grid is to be used (snapping to grid) | An object with the required values: <br> `test`  | `false` |
 
 ##### Example:
 ```javascript
 let options = {
   axis: 'xy',
-  start: function(){
+  init: function(e){
+    console.log('.DraggableJS() called');
+  },  
+  start: function(e){
     console.log('Drag started');
   },  
-  drag: function(){
+  drag: function(e){
     console.log('Drag in progress');
   },
-  end: function(){
+  end: function(e){
     console.log('Drag ended');
+  },
+  grid:{
+    rows: 4,
+    columns: 5,
+    dragEndSnap: true,
+    dragSnap: false
   }
 };
 document.querySelectorAll('.draggable').DraggableJS(options);
@@ -67,7 +78,8 @@ Functions for draggable elements:
 | Method | Description | 
 | --- | --- |
 | `getPosition()` | Returns the current position of the element, relative to its parent |
-| `setPosition(left, top)` | Sets an element's position, relative to its parent |
+| `setPosition(left, top)` | Sets an element's position in pixels, relative to its parent |
+| `setGridPosition(row, col)` | Sets an element's grid position, when `grid` is enabled |
 
 
 * ##### `getPosition()`:

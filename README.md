@@ -84,7 +84,6 @@ Functions for draggable elements:
 
 * ##### `getPosition()`:
   ```javascript
-  
   let element = document.getElementById('drag');
   let position = element.getPosition();
   console.log(position);
@@ -106,11 +105,16 @@ Functions for draggable elements:
 
 * ##### `setPosition(left, top)`:
   ```javascript
-  
   let element = document.getElementById('drag');
   element.setPosition(100,200); // In pixels
   ```
-
+  
+* ##### `setGridPosition(row, col)`:
+  ```javascript
+  let element = document.getElementById('drag');
+  element.setGridPosition(3, 4);
+  ```
+  
 ## Examples
 1. Default Settings [View](https://codepen.io/xenova/full/MWYOMZB)
 2. Axis Lock [View](https://codepen.io/xenova/full/MWYQjXL)

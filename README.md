@@ -43,7 +43,7 @@ Apply options by passing in an array of zero or more of the following key-value 
 | `start` | Specifies the function to be called when the drag event starts | Any function | `function(e){}` |
 | `drag` | Specifies the function to be called when the item is being dragged | Any function | `function(e){}` |
 | `end` | Specifies the function to be called when the drag event ends | Any function | `function(e){}` |
-| `grid` | Specifies whether a grid is to be used (snapping to grid) | An object with the required values: <br> `test`  | `false` |
+| `grid` | Specifies whether a grid is to be used (snapping to grid) | An object with the required values: <br> `rows: [int], columns: [int], dragEndSnap: [boolean], dragSnap: [boolean],`  | `false` |
 
 ##### Example:
 ```javascript

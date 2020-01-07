@@ -65,8 +65,8 @@ Element.prototype.DraggableJS = function (o) {
 
             function restrict(value, axis) {
                 let offsetPosition = (axis == 'x') ? (self.offsetLeft) : (self.offsetTop);
-                let offsetLength = (axis == 'x') ? (self.offsetWidth) : (self.offsetHeight);
-                let parentOffsetLength = (axis == 'x') ? (self.parentNode.offsetWidth) : (self.parentNode.offsetHeight);
+                let offsetLength = (axis == 'x') ? (self.clientWidth) : (self.clientHeight);
+                let parentOffsetLength = (axis == 'x') ? (self.parentNode.clientWidth) : (self.parentNode.clientHeight);
                 let length = (axis == 'x') ? ('width') : ('height');
                 let transform = (axis == 'x') ? (cm.m41) : (cm.m42);;
                 let scale = (axis == 'x') ? (cm.m11) : (cm.m22);
@@ -104,25 +104,25 @@ Element.prototype.DraggableJS = function (o) {
 
 
     function snapToGrid(x, y) {
-        let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
-        let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
+        let colWidth = (self.parentNode.clientWidth / self.options.grid.columns);
+        let rowWidth = (self.parentNode.clientHeight / self.options.grid.rows);
 
-        let paddingLeft = (self.offsetWidth - colWidth) / 2;
-        let paddingTop = (self.offsetHeight - rowWidth) / 2;
+        let paddingLeft = (self.clientWidth - colWidth) / 2;
+        let paddingTop = (self.clientHeight - rowWidth) / 2;
 
-        x = Math.round((x + self.offsetLeft - (self.offsetWidth / 2 - self.startOffset[0])) / colWidth) * colWidth - paddingLeft;
-        y = Math.round((y + self.offsetTop - (self.offsetHeight / 2 - self.startOffset[1])) / rowWidth) * rowWidth - paddingTop;
+        x = Math.round((x + self.offsetLeft - (self.clientWidth / 2 - self.startOffset[0])) / colWidth) * colWidth - paddingLeft;
+        y = Math.round((y + self.offsetTop - (self.clientHeight / 2 - self.startOffset[1])) / rowWidth) * rowWidth - paddingTop;
 
         self.setPosition(x, y);
     }
 
     self.setGridPosition = function (row, col) {
         if (self.options.grid) {
-            let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
-            let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
+            let colWidth = (self.parentNode.clientWidth / self.options.grid.columns);
+            let rowWidth = (self.parentNode.clientHeight / self.options.grid.rows);
 
-            let paddingLeft = (self.offsetWidth - colWidth) / 2;
-            let paddingTop = (self.offsetHeight - rowWidth) / 2;
+            let paddingLeft = (self.clientWidth - colWidth) / 2;
+            let paddingTop = (self.clientHeight - rowWidth) / 2;
 
             x = Math.round(col * colWidth - paddingLeft);
             y = Math.round(row * rowWidth - paddingTop);
@@ -160,11 +160,11 @@ Element.prototype.DraggableJS = function (o) {
         let matrix = getTransformMatrix(this);
         let left = {};
         left.pixels = matrix.m41 + this.offsetLeft;
-        left.percentage = left.pixels / this.parentNode.offsetWidth;
+        left.percentage = left.pixels / this.parentNode.clientWidth;
 
         let top = {};
         top.pixels = matrix.m42 + this.offsetTop;
-        top.percentage = top.pixels / this.parentNode.offsetHeight;
+        top.percentage = top.pixels / this.parentNode.clientHeight;
 
         return {
             left: left,

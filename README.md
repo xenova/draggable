@@ -120,6 +120,6 @@ Functions for draggable elements:
 2. Axis Lock [View](https://codepen.io/xenova/full/MWYQjXL)
 3. Events [View](https://codepen.io/xenova/full/oNgEzaL)
 4. Methods [View](https://codepen.io/xenova/full/zYxRKbY)
-5. Full Example (Chess) [View](https://codepen.io/xenova/pen/PowQbPe). (No Game Logic)
+5. Full Example (Chess) [View](https://codepen.io/xenova/full/PowQbPe). (No Game Logic)
 
 Click "View" to view a demo. (Change view to "Editor View" to view source code)

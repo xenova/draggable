@@ -3,7 +3,7 @@ A lightweight JavaScript framework for creating draggable HTML elements - using 
 
 ## Getting Started
 ### Linking to the script
-Add a reference to the script by either linking to https://xenova.github.io/Draggable/dist/draggable.min.js, or by downloading the script and using it offline.
+Add a reference to the script by either linking to https://xenova.github.io/Draggable/dist/draggable.min.js, or by downloading the [script](dist/draggable.min.js) and using it offline.
 
 ```html
 <!-- Include using github -->
@@ -38,7 +38,7 @@ Apply options by passing in an array of zero or more of the following key-value 
 
 | Option | Description | Allowed values | Default | 
 | --- | --- | --- | --- |
-| `axis` | Specifies which axis/axes the element will be fixed to | `'x'`, `'y'`, `'xy'` | `axis: 'xy'` |
+| `axis` | Specifies which axis/axes the element will be fixed to | `'x'`, `'y'`, `'xy'` | `'xy'` |
 | `init` | Called when `DraggableJS()` is run on an element  | Any function | `function(e){}` |
 | `start` | Specifies the function to be called when the drag event starts | Any function | `function(e){}` |
 | `drag` | Specifies the function to be called when the item is being dragged | Any function | `function(e){}` |
@@ -112,3 +112,10 @@ Functions for draggable elements:
   ```
 
 ## Examples
+1. Default Settings [View](https://codepen.io/xenova/full/MWYOMZB)
+2. Axis Lock [View](https://codepen.io/xenova/full/MWYQjXL)
+3. Events [View](https://codepen.io/xenova/full/oNgEzaL)
+4. Methods [View](https://codepen.io/xenova/full/zYxRKbY)
+5. Full Example (Chess) [View](https://codepen.io/xenova/pen/PowQbPe). (No Game Logic)
+
+Click "View" to view a demo. (Change view to "Editor View" to view source code)

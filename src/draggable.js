@@ -1,37 +1,22 @@
 Element.prototype.DraggableJS = function (o) {
     const self = this;
 
-    //default options
     const defaultOptions = {
-        axis: 'xy', //x, y, xy
-
+        axis: 'xy',
+        init: function (e) {
+        },
         start: function (e) {
         },
         drag: function (e) {
         },
         end: function (e) {
         },
-        init: function (e) {
-        },
-        grid: {
-            rows: 8,
-            columns: 8,
-            dragEndSnap: true,
-            dragSnap: false,//true or false
-        },
-
+        grid: false
     }
-    /**
-     * Future additions:
-     *  - Containment (parent, document, window)
-     *  - Momentum (true/false)
-     *  - Axis (z)
-     */
-
     self.options = Object.assign({}, defaultOptions, o);
     self.mouseDown = false;
-    self.style.cssText = 'position:absolute;will-change: transform;transform-style:preserve-3d; -webkit-touch-callout: none; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;';
-    self.parentNode.style.cssText = 'will-change: transform;transform-style: preserve-3d;';
+    self.style.cssText += 'position:absolute;will-change: transform;transform-style:preserve-3d; -webkit-touch-callout: none; -webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;';
+    self.parentNode.style.cssText += 'will-change: transform;transform-style: preserve-3d;position: relative;';
 
     addMultipleEventListener(self, 'touchmove', function (e) {
         e.preventDefault();
@@ -57,24 +42,12 @@ Element.prototype.DraggableJS = function (o) {
         if (self.mouseDown) {
             self.mouseDown = false;
 
-
-
-            // let cmp = getTransformMatrix(self.parentNode);
-            // self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
-
-            if (self.options.grid.dragEndSnap) {
-
+            if (self.options.grid && self.options.grid.dragEndSnap) {
                 let cm = getTransformMatrix(self);
                 snapToGrid(cm.m41, cm.m42);
-                // snapToGrid(x+self.offsetLeft, y+self.offsetTop);
-                // snapToGrid();
             }
 
-
-
             self.options.end.call(self, e);
-
-
 
         }
     });
@@ -116,12 +89,10 @@ Element.prototype.DraggableJS = function (o) {
                 return Math.min(Math.max(value, ax + a), bx + c);
             }
 
-
             x = (self.options.axis.toLowerCase().indexOf('x') > -1) ? restrict(x, 'x') : cm.m41;
             y = (self.options.axis.toLowerCase().indexOf('y') > -1) ? restrict(y, 'y') : cm.m42;
 
-            if (self.options.grid.dragSnap) {
-
+            if (self.options.grid && self.options.grid.dragSnap) {
                 snapToGrid(x, y);
             } else {
                 translate(cm, x, y);
@@ -146,16 +117,18 @@ Element.prototype.DraggableJS = function (o) {
     }
 
     self.setGridPosition = function (row, col) {
-        let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
-        let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
+        if (self.options.grid) {
+            let colWidth = (self.parentNode.offsetWidth / self.options.grid.columns);
+            let rowWidth = (self.parentNode.offsetHeight / self.options.grid.rows);
 
-        let paddingLeft = (self.offsetWidth - colWidth) / 2;
-        let paddingTop = (self.offsetHeight - rowWidth) / 2;
+            let paddingLeft = (self.offsetWidth - colWidth) / 2;
+            let paddingTop = (self.offsetHeight - rowWidth) / 2;
 
-        x = Math.round(col * colWidth - paddingLeft);
-        y = Math.round(row * rowWidth - paddingTop);
+            x = Math.round(col * colWidth - paddingLeft);
+            y = Math.round(row * rowWidth - paddingTop);
 
-        self.setPosition(x, y);
+            self.setPosition(x, y);
+        }
     }
 
     function addMultipleEventListener(element, events, handler, args) {
@@ -209,7 +182,6 @@ Element.prototype.DraggableJS = function (o) {
     function translate(cm, x, y) {
         self.style.transform = 'matrix3d(' + cm.m11 + ', ' + cm.m12 + ', ' + cm.m13 + ', ' + cm.m14 + ', ' + cm.m21 + ', ' + cm.m22 + ', ' + cm.m23 + ', ' + cm.m24 + ', ' + cm.m31 + ', ' + cm.m32 + ', ' + cm.m33 + ', ' + cm.m34 + ', ' + x + ', ' + y + ', ' + cm.m43 + ', ' + cm.m44 + ')';
     }
-
     self.options.init.call(self);
 }
 

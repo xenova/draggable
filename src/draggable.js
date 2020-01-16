@@ -172,11 +172,13 @@ Element.prototype.DraggableJS = function (o) {
         };
     }
 
+    self.setTransformPosition = function(x,y){
+        translate(getTransformMatrix(self), x, y);
+    }
     self.setPosition = function (left, top) {
-        let x = parseFloat('' + left) - self.offsetLeft;// 
-        let y = parseFloat('' + top) - self.offsetTop;//
-
-        translate(getTransformMatrix(self), x, y)
+        let x = parseFloat('' + left) - self.offsetLeft;
+        let y = parseFloat('' + top) - self.offsetTop;
+        self.setTransformPosition(x,y);
 
     }
     function translate(cm, x, y) {

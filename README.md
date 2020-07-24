@@ -3,7 +3,7 @@ A lightweight JavaScript framework for creating draggable HTML elements - using 
 
 ## Getting Started
 ### Linking to the script
-Add a reference to the script by either linking to https://xenova.github.io/Draggable/dist/draggable.min.js, or by downloading the [script](dist/draggable.min.js) and using it offline.
+Add a reference to the script by either linking to https://xenova.github.io/draggable/dist/draggable.min.js, or by downloading the [script](dist/draggable.min.js) and using it offline.
 
 ```html
 <!-- Include using github -->
